@@ -12,12 +12,15 @@ State is _dynamic data_. Things that change.
 
 ```jsx live=true
 const Counter = () => {
-  const [count, setCount] = React.useState(0);
+  //second hook that we will learn. 
+  //this will set us with a state var count, and pass it function that will trigger change instinct (setCount).
+  const [count, setCount] = React.useState(0); //0 is the initial value. 
+  //React.useState() is an array. 
 
   return (
     <>
       <p>Count: {count}</p>
-      <button onClick={() => setCount(count + 1)}>
+      <button onClick={() => setCount(count + 1)}> //when there is change to the state, it will re render the whole above component.
         Increment
       </button>
     </>
@@ -34,12 +37,12 @@ render(<Counter />)
 These snippets are identical:
 
 ```jsx
-// Using deconstruction:
+**Using deconstruction:
 const [value, setValue] = React.useState(null);
 ```
 
 ```jsx
-// Without deconstruction:
+** Without deconstruction:
 const valueState = React.useState(null);
 const value = valueState[0];
 const setValue = valueState[1];
@@ -64,6 +67,9 @@ This snippet won't throw an error, but it also won't work:
 let [value, setValue] = React.useState(null);
 
 value = 10;
+
+**the function  will change the state and we shouldnt redeclare the variable. 
+
 ```
 
 ---
@@ -83,7 +89,8 @@ This is why the values on the screen change.
 `value` and `onChange`
 
 ```jsx live=true
-const Name = () => {
+const Name = () => { 
+  **Name is setName**
   const [name, setName] = React.useState('');
 
   return (
@@ -135,6 +142,7 @@ function SomeComponent() {
       One, Two, Three!
     </button>
   )
+  **CONSOLE: 11, 12, 13
 }
 ```
 
@@ -181,6 +189,7 @@ function SomeComponent() {
     />
   )
 }
+** added it dynamically 1 by 1. 
 ```
 
 ---
@@ -219,16 +228,22 @@ What happens when you want to share state between components?
 
 ```jsx
 const App = () => {
+    const [searchTerm, setSearchTerm] = React.useState('');
+
   return (
     <>
-      <SearchInput />
+      <SearchInput
+      searchTerm={searchTerms}
+      setSearchTerm={setSearchTerm}
+       />
       <SearchResults />
     </>
   )
 }
-
-const SearchInput = () => {
-  const [searchTerm, setSearchTerm] = React.useState('');
+//can only pass from parent to child and not from siblings
+//accepting them here
+const SearchInput = ({searchTerm, setSearchTerm}) => {
+  // const [searchTerm, setSearchTerm] = React.useState('');
 
   return (
     <input
@@ -242,7 +257,9 @@ const SearchInput = () => {
 }
 
 const SearchResults = () => {
-  // ??
+  **?? Doesnt have access to searchTerms. 
+
+
 }
 ```
 
@@ -259,8 +276,8 @@ Lift state up in the following examples
 ---
 
 ```jsx live=true
-const Counter = () => {
-  const [count, setCount] = React.useState(0);
+const Counter = ({count, setCount}) => {
+  // const [count, setCount] = React.useState(0);
 
   return (
     <>
@@ -272,11 +289,14 @@ const Counter = () => {
 };
 
 const App = () => {
+  **setCount has the value which is the function. 
+    const [count, setCount] = React.useState(0);
+
   return (
     <>
-      The current count is: ???
+      The current count is: {count}
 
-      <Counter />
+      <Counter count={count, setCount} />
     </>
   )
 }
@@ -287,8 +307,8 @@ render(<App />)
 ---
 
 ```jsx live=true
-const FavouriteFood = () => {
-  const [food, setFood] = React.useState('');
+const FavouriteFood = ({setFood}) => {
+  // const [food, setFood] = React.useState('');
 
   return (
     <>
@@ -297,7 +317,7 @@ const FavouriteFood = () => {
           type="radio"
           name="food"
           value="pizza"
-          checked={food === 'pizza'}
+          // checked={food === 'pizza'}
           onChange={() => setFood('pizza')}
         />
         Pizza
@@ -307,7 +327,7 @@ const FavouriteFood = () => {
           type="radio"
           name="food"
           value="broccoli"
-          checked={food === 'broccoli'}
+          // checked={food === 'broccoli'}
           onChange={() => setFood('broccoli')}
         />
         Broccoli
@@ -317,11 +337,13 @@ const FavouriteFood = () => {
 };
 
 const App = () => {
+    const [food, setFood] = React.useState('');
+
   return (
     <>
-      My favourite food is: ???
+      My favourite food is: {food}
       <br /><br />
-      <FavouriteFood />
+      <FavouriteFood food={food} setFood={setFood} />
     </>
   )
 }
