@@ -14,7 +14,7 @@ const [searchInput, setSearch] = React.useState('');
         }
     
     })
-    .slice(0,5)
+    // .slice(0,5)
 
 
 return (
