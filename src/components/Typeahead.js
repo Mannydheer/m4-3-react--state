@@ -6,6 +6,8 @@ import Filter from './Filter';
 
 const Typeahead = (props) => {
 let books = props.books
+const [value, setValue] = React.useState('');
+const [selectedSuggestionIndex, setSelectedSuggestionIndex] = React.useState(0);
 const [searchInput, setSearch] = React.useState('');
 
     let matchedBooks = books.filter(book => {
@@ -14,16 +16,31 @@ const [searchInput, setSearch] = React.useState('');
         }
     
     })
-    // .slice(0,5)
-
+    console.log(selectedSuggestionIndex)    // .slice(0,5)
 
 return (
 <MainDiv>
     {/* enter needs to dynamically change. */}
     <input type='text' value={searchInput} onKeyDown={(ev) => {
-        {if (ev.key === 'Enter') {
-           props.handleSelect(searchInput)
-        }}
+
+        switch (ev.key) {
+            case 'Enter': {
+                props.handleSelect(ev.target.value)
+                return;
+            }
+            case 'ArrowUp': {
+                setSelectedSuggestionIndex(selectedSuggestionIndex - 1)
+                // 
+            }
+            case 'ArrowDown': {
+                // 
+                setSelectedSuggestionIndex(selectedSuggestionIndex + 1)
+
+            }
+        }
+        // {if (ev.key === 'Enter') {
+        //    props.handleSelect(searchInput)
+        // }}
     }} onChange={(ev) => {
         setSearch(ev.target.value)
     }}></input>
@@ -31,7 +48,7 @@ return (
         setSearch('')
     }}>Clear</Btn>
     <StyledList>
-    <Filter searchInput={searchInput} dataEntered={searchInput} matchedBooks={matchedBooks} theHandler={props.handleSelect}/>
+    <Filter selectedSuggestionIndex={selectedSuggestionIndex} searchInput={searchInput} dataEntered={searchInput} matchedBooks={matchedBooks} theHandler={props.handleSelect}/>
     
     </StyledList>
 
@@ -52,6 +69,10 @@ ul {
     list-style-type: none;
 
 }
+box-shadow: -1px 9px 24px 0px rgba(0, 0, 0, 0.75);
+padding: 10px;
+background-color: lightyellow;
+
 
 `
 
