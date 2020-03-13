@@ -15,13 +15,9 @@ const Button = styled.button`
   font-weight: bold;
   background: #EEE;
 `;
+//what you can do is.... Import previous styleds and append new styles.
+const BlueButton = styled(Button)`
 
-const BlueButton = styled.button`
-  padding: 10px;
-  margin: 10px;
-  border-radius: 4px;
-  font-size: 18px;
-  font-weight: bold;
   background: #2B00D7;
   color: #FFF;
 `
@@ -47,5 +43,14 @@ const ListItem = styled.li`
   }
 `
 ```
+//generate randmo stuff
+.sc-we3sw {
+  border-bottom: 1px solid;
+
+}
+.sc-we3sw:last-of-type{
+  border-bottom: none;
+
+}
 
 ---
