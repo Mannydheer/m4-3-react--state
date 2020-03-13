@@ -6,9 +6,13 @@ import Filter from './Filter';
 
 const Typeahead = (props) => {
 let books = props.books
+let handler = props.handleSelect;
 const [value, setValue] = React.useState('');
 const [selectedSuggestionIndex, setSelectedSuggestionIndex] = React.useState(0);
 const [searchInput, setSearch] = React.useState('');
+//
+
+//
 
     let matchedBooks = books.filter(book => {
         if(searchInput.length >= 2 && book.title.toLowerCase().includes(searchInput.toLowerCase())) {
@@ -16,7 +20,6 @@ const [searchInput, setSearch] = React.useState('');
         }
     
     })
-    console.log(selectedSuggestionIndex)    // .slice(0,5)
 
 return (
 <MainDiv>
@@ -25,22 +28,28 @@ return (
 
         switch (ev.key) {
             case 'Enter': {
-                props.handleSelect(ev.target.value)
+                // let event = ev.key;
+                // console.log(event, 'HIIHIHIH')
+
+                // props.handleSelect(ev.target.value)
+                props.handleSelect(matchedBooks[selectedSuggestionIndex].title)
                 return;
             }
             case 'ArrowUp': {
+                if(selectedSuggestionIndex > 0) {
                 setSelectedSuggestionIndex(selectedSuggestionIndex - 1)
+                }
                 // 
+                break;
             }
             case 'ArrowDown': {
-                // 
+                if(selectedSuggestionIndex < matchedBooks.length - 1)
                 setSelectedSuggestionIndex(selectedSuggestionIndex + 1)
+                break;
 
             }
         }
-        // {if (ev.key === 'Enter') {
-        //    props.handleSelect(searchInput)
-        // }}
+
     }} onChange={(ev) => {
         setSearch(ev.target.value)
     }}></input>
@@ -48,7 +57,10 @@ return (
         setSearch('')
     }}>Clear</Btn>
     <StyledList>
-    <Filter selectedSuggestionIndex={selectedSuggestionIndex} searchInput={searchInput} dataEntered={searchInput} matchedBooks={matchedBooks} theHandler={props.handleSelect}/>
+    <Filter theHandler={props.handleSelect} 
+    setSelectedSuggestionIndex={setSelectedSuggestionIndex}
+    selectedSuggestionIndex={selectedSuggestionIndex} searchInput={searchInput} dataEntered={searchInput} 
+    matchedBooks={matchedBooks}/>
     
     </StyledList>
 
@@ -56,6 +68,10 @@ return (
 </MainDiv>
 )
 }
+  // const [hover, setHover] = React.useState('lightblue');
+  // const backgroundColor = hover ? "lightblue" :  "white";
+   //double check
+// onMouseEnter = {() => setHover('white')} style={{ backgroundColor }} 
 
 
 export default Typeahead;
@@ -84,3 +100,4 @@ font-size: 20px;
 height: 30px;
 width: 70px;10
 `
+
